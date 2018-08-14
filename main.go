@@ -22,12 +22,22 @@ func getNumberByRandom(ctx *gin.Context){
 	username := ctx.DefaultQuery("username", "Anonymous")
 	numberinfo.UserName = username
 	numberinfo.Number = getRandomNumber()
-	InfoList = append(InfoList, numberinfo)
-	ctx.String(http.StatusOK, fmt.Sprintf("UserName %s Roll %d", username, numberinfo.Number))
+	removeRepeat(numberinfo)
+	ctx.String(http.StatusOK, fmt.Sprintf("用户%sRoll的点数为%d。", username, numberinfo.Number))
+}
+
+func removeRepeat(numberInfo NumberInfo){
+	for _, element := range InfoList{
+		if element.IP == numberInfo.IP {
+			return
+		}
+	}
+	InfoList = append(InfoList, numberInfo)
+
 }
 
 func getStatistic(ctx * gin.Context){
-	templateString := "index %d, ip %s: %s roll %d\n"
+	templateString := "%d, IP地址为%s的用户%sRoll的点数为%d。\n"
 	resultString:= ""
 	if len(InfoList) > 0 {
 		for index, element := range InfoList {
@@ -35,7 +45,7 @@ func getStatistic(ctx * gin.Context){
 		}
 		ctx.String(http.StatusOK, resultString)
 	} else{
-		ctx.String(http.StatusOK, "nobody rolls.")
+		ctx.String(http.StatusOK, "没有记录")
 	}
 }
 
