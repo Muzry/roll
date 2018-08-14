@@ -23,7 +23,7 @@ func getNumberByRandom(ctx *gin.Context){
 	numberinfo.UserName = username
 	numberinfo.Number = getRandomNumber()
 	removeRepeat(numberinfo)
-	ctx.String(http.StatusOK, fmt.Sprintf("用户%sRoll的点数为%d。", username, numberinfo.Number))
+	ctx.String(http.StatusOK, fmt.Sprintf("%sRoll的点数为%d。", username, numberinfo.Number))
 }
 
 func removeRepeat(numberInfo NumberInfo){
@@ -45,7 +45,7 @@ func getStatistic(ctx * gin.Context){
 		}
 		ctx.String(http.StatusOK, resultString)
 	} else{
-		ctx.String(http.StatusOK, "没有记录")
+		ctx.String(http.StatusOK, "没有记录。")
 	}
 }
 
